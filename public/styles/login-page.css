@@ -1,0 +1,36 @@
+/* 
+#login-box {
+    border: 2px white solid;
+    border-radius: 50px;
+} */
+
+h1 {
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    text-align: center;
+    color: #157347;
+    font-size: 50px;
+}
+
+.logo {
+    display: flex;
+}
+
+body {
+    background-color: #1a202c;
+}
+
+#login-box > h2 {
+    color: white;
+}
+
+#login-alignment {
+    display: flex;
+    justify-content: center;
+}
+
+/* #login-box .form-floating > .form-control {
+    height: 45px;
+    min-height: 45px;
+    padding: 1.5rem 0.75rem 0.5rem 0.75rem; 
+} */

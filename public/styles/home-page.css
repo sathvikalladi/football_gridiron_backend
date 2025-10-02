@@ -1,0 +1,49 @@
+.my-dashboard-title {
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    margin-left: 100px;
+    margin-top: 40px;
+    color: white;
+}
+
+#tabs {
+    display: flex;
+    justify-content: center;
+}
+
+.tab-heading {
+    color: black;
+    font-size: 14px;
+}
+
+.tab-content {
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+#tabs div {
+    background-color: #2d3748;
+    border-left: 5px solid #00ff87;
+    border-radius: 8px;
+}
+
+.extra-info {
+    background-color: #1a202c; 
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.extra-info h2 {
+    color: white;
+    font-size: 22px;
+    margin-bottom: 1rem;
+}
+
+.my-roster-box,
+.weekly-matchups-box {
+    background-color: #1f2833;
+    border-radius: 8px;
+    min-height: 300px;
+    padding: 20px;
+}

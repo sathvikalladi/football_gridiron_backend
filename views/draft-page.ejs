@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link href="/styles/draft-page.css" rel="stylesheet">
+<body>
+    <%- include('partials/header.ejs') %>
+
+    <div id="player-draft-div" class="container mt-4 px-4"> 
+        
+        <h2 id="title-text" class="mb-4">Player Draft</h2>
+
+        <div class="row">
+
+            <div class="col-md-8">
+                
+                <div id="search-player-section" class="mb-4">
+                    <input type="text" placeholder="Search player name..." id="search-player-input" class="rounded-3 form-control mt-2">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle mt-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            All positions
+                        </button>
+                        <ul class="dropdown-menu">
+                            <!-- make it so that it hides the link of whichever one the user is currently on -->
+                            <li><a class="dropdown-item" href="/draft?position=ALL">All positions</a></li>
+                            <li><a class="dropdown-item" href="/draft?position=QB">QB</a></li>
+                            <li><a class="dropdown-item" href="/draft?position=RB">RB</a></li>
+                            <li><a class="dropdown-item" href="/draft?position=WR">WR</a></li>
+                            <li><a class="dropdown-item" href="/draft?position=TE">TE</a></li>
+                            <li><a class="dropdown-item" href="/draft?position=K">K</a></li>
+                            <li><a class="dropdown-item" href="/draft?position=DEF">DEF</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="player-cards-in-draft" class="player-list-scroll-area">
+                    
+                    <% for(var i = 0; i < draftPool.length; i++) { %>
+                        <% if(!draftPool[i].isDrafted) { %>
+                        <div class="card-body d-flex justify-content-between align-items-center border border-light border-opacity-10 p-3 mb-3 rounded-3 player-cards">
+                            <div>
+                                <h5 class="card-title mb-0"><%= draftPool[i].name %> <span class="badge bg-secondary"><%= draftPool[i].position %></span></h5>
+                                <p class="card-text text-muted"><%= draftPool[i].team %></p>
+                            </div>
+                            <form method="POST" action="/draft">
+                                <input type="hidden" name="playerID" value="<%= draftPool[i].pid %>">
+                                <input type="hidden" name="actionType" value="draft">
+                                <!-- <button type="submit" class="btn btn-success draft-btn" data-player-id="1">Draft</button> -->
+                                <button type="submit" class="btn btn-success draft-btn" data-player-id="<%= draftPool[i].pid %>" onclick="console.log('Clicked', <%= draftPool[i].pid %>)">Draft</button>
+                            </form>
+                        </div>
+                        <% } %>
+                    <% } %>
+                </div>
+
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card bg-dark text-white shadow-lg border border-light border-opacity-10 p-3 mb-3 rounded-3">
+                    <h4 class="mb-3">My Roster (<%= playerCount %>/10)</h4>
+
+                    <div class="progress mb-3">
+                        <div id="roster-progress-bar" class="progress-bar bg-success" role="progressbar" style="width: <%= barPercentComplete %>%;"></div>
+                        <!-- add 10% width every time you draft a player. -->
+                    </div>
+
+                    <div class="card-body d-flex justify-content-between align-items-center border border-light border-opacity-25 p-2 mb-3 rounded-3 bg-secondary">
+                        <!-- text align content inside to center. -->
+                        <div class="my-roster">
+                            <% for(var i = 0; i < myRoster.length; i++) { %>
+                                <div>
+                                    <p class="card-title mb-0" style="color: rgb(38, 36, 36);"><%= myRoster[i].name %> (<%= myRoster[i].position %>)</p>
+                                    <form method="POST" action="/draft">
+                                        <input type="hidden" name="playerID" value="<%= myRoster[i].id %>">
+                                        <input type="hidden" name="actionType" value="undraft">
+                                        <button type="submit" class="btn-close" aria-label="Close"></button>
+                                    </form>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</html>

@@ -1,0 +1,29 @@
+#title-text {
+    color: white;
+}
+
+/* check again */
+#search-player-section {
+    display: flex;
+    gap: 15px;
+}
+
+.player-cards {
+    background-color: #212529;
+    color: white;
+}
+
+.player-cards:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 24px 0  rgba(96, 97, 151, 0.4);
+}
+
+#player-cards-in-draft {
+    color: white;
+    justify-content: left;
+    align-items: left;
+}
+
+.my-roster {
+    display: flex;
+}

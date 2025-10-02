@@ -1,0 +1,28 @@
+.navbar-collapse {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 100px
+}
+
+body {
+    background-color: #1a202c;
+}
+
+.navbar-brand {
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    margin-left: 100px;
+    margin-right: 0px;
+    color: #157347;
+    text-align: center;
+    justify-content: center;
+}
+
+a.nav-link {
+    color: rgb(154, 151, 151);
+}
+
+a.nav-link:hover {
+    color:lightgrey;
+}
+
