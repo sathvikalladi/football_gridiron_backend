@@ -1,12 +1,11 @@
 import pg from 'pg';
-const { Pool } = pg;
 
-const pool = new Pool({
-    user: 'sathvikalladi',
+const db = new pg.Client({
+    user: 'postgres',
     host: 'localhost',
     database: 'football_gridiron',
-    password: '',
+    password: 'password1',
     port: 5432,
 });
 
-export default pool;
+export default db;

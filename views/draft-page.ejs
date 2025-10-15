@@ -22,10 +22,9 @@
                     <input type="text" placeholder="Search player name..." id="search-player-input" class="rounded-3 form-control mt-2">
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle mt-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            All positions
+                            <%= currentFilter %>
                         </button>
                         <ul class="dropdown-menu">
-                            <!-- make it so that it hides the link of whichever one the user is currently on -->
                             <li><a class="dropdown-item" href="/draft?position=ALL">All positions</a></li>
                             <li><a class="dropdown-item" href="/draft?position=QB">QB</a></li>
                             <li><a class="dropdown-item" href="/draft?position=RB">RB</a></li>
@@ -49,7 +48,6 @@
                             <form method="POST" action="/draft">
                                 <input type="hidden" name="playerID" value="<%= draftPool[i].pid %>">
                                 <input type="hidden" name="actionType" value="draft">
-                                <!-- <button type="submit" class="btn btn-success draft-btn" data-player-id="1">Draft</button> -->
                                 <button type="submit" class="btn btn-success draft-btn" data-player-id="<%= draftPool[i].pid %>" onclick="console.log('Clicked', <%= draftPool[i].pid %>)">Draft</button>
                             </form>
                         </div>
@@ -90,4 +88,5 @@
 
 </body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="javaScript/draft-page.js" charset="UTF-8"></script>
 </html>
