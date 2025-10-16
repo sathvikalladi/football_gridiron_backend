@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import db from './db.js';
 import bcrypt from "bcrypt";
 
+const saltRounds = 10;
 const app = express();
 const port = 3000;
 let DRAFT_POOL = [];
@@ -35,8 +36,22 @@ app.get("/", (req, res) => {
 });
 
 app.post("/home", (req, res) => {
-    const userName = req.body["userName"];
-    res.render("home-page.ejs", { name: userName});
+    //registering user
+    const name = req.body["name"];
+    const password = req.body["password"];
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+        if(err) {
+            console.log(err);
+        }
+        else {
+            const addPassword = db.query(
+                "INSERT INTO users (name, password) VALUES ($1, $2)",
+                [name, hash]
+            );
+        }
+    });
+    
+    res.render("home-page.ejs", { name: name });
 });
 
 app.get("/dashboard", (req, res) => {
