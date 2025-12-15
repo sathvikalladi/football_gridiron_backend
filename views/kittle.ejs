@@ -11,8 +11,8 @@
     <%- include('partials/alt-header.ejs') %>
 
     <div id="search-player-section" class="mb-4">
-        <form method="POST" action="/kittle">
-            <input type="text" class="rounded-3 mt-2" placeholder="Guess a player...">
+        <form method="POST" action="/kittle/player-guess">
+            <input type="text" class="rounded-3 mt-2" placeholder="Guess a player..." name="userGuess" value="Justin jefferson">
             <button type="submit" class="rounded-3 mt-2">Submit</button>
         </form>
     </div>

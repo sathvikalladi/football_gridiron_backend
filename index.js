@@ -1,9 +1,9 @@
 import express from "express";
 import bodyParser from "body-parser";
-import db from './db.js';
-import bcrypt from "bcrypt";
+import db from "./db.js";
+import authenticationRoutes from "./authentication.js";
+import kittleRoutes from "./kittle.js";
 
-const saltRounds = 10;
 const app = express();
 const port = 3000;
 let DRAFT_POOL = [];
@@ -12,6 +12,7 @@ const USER_ROSTER = [];
 db.connect();
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.use(express.static("public"));
 
@@ -31,28 +32,9 @@ async function loadDraftPool() {
 await loadDraftPool();
 //
 
-app.get("/", (req, res) => {
-    res.render("login-page.ejs");
-});
+app.use("/", authenticationRoutes);
 
-app.post("/home", (req, res) => {
-    //registering user
-    const name = req.body["name"];
-    const password = req.body["password"];
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-        if(err) {
-            console.log(err);
-        }
-        else {
-            const addPassword = db.query(
-                "INSERT INTO users (name, password) VALUES ($1, $2)",
-                [name, hash]
-            );
-        }
-    });
-    
-    res.render("home-page.ejs", { name: name });
-});
+app.use("/", kittleRoutes);
 
 app.get("/dashboard", (req, res) => {
     const noOfPlayers = USER_ROSTER.length;
@@ -155,7 +137,9 @@ app.get("/leaderboard", (req, res) => {
 
 //kittle:
 app.get("/kittle", (req, res) => {
-    res.render("kittle.ejs");
+    res.render("kittle.ejs", {
+        draftPool: DRAFT_POOL
+    });
 });
 
 app.listen(port, () => {
