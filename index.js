@@ -1,20 +1,25 @@
 import express from "express";
 import bodyParser from "body-parser";
-import pool from './db.js';
+import db from "./db.js";
+import authenticationRoutes from "./authentication.js";
+import kittleRoutes from "./kittle.js";
 
 const app = express();
 const port = 3000;
 let DRAFT_POOL = [];
 const USER_ROSTER = [];
 
+db.connect();
+
 app.use(bodyParser.urlencoded({ extended: true }));
-// Comment for new branch
+app.use(express.json());
 
 app.use(express.static("public"));
 
+//load draft pool:
 async function loadDraftPool() {
     try {
-        const result = await pool.query('SELECT pid, name, position, team FROM player_list');
+        const result = await db.query('SELECT pid, name, position, team FROM player_list');
         DRAFT_POOL = result.rows.map(player => ({
             ...player,
             isDrafted: false
@@ -24,37 +29,33 @@ async function loadDraftPool() {
         console.error("Failed to load draft pool:", err);
     }
 }
-
 await loadDraftPool();
+//
 
-app.get("/", (req, res) => {
-    res.render("login-page.ejs");
-});
+app.use("/", authenticationRoutes);
 
-app.get("/home", (req, res) => {
+app.use("/", kittleRoutes);
+
+app.get("/dashboard", (req, res) => {
     const noOfPlayers = USER_ROSTER.length;
-    res.render("home-page.ejs", {
+    res.render("dashboard.ejs", {
         myRoster: USER_ROSTER,
         playerCount: noOfPlayers
     });
-    // add class active
 });
 
-// async is defined before keyword function here, but in endpoint it is before (req,res) why. Understand async in detail.
+//filter players by position(convert to frontend process):
 async function getFilteredDraftPool(query) {
-    // Get the position from the URL query (e.g., "QB" from ?position=QB)
     const filterPosition = query.position; 
     console.log(DRAFT_POOL);
     let filteredDraftPool = DRAFT_POOL;
     let currentFilter = "All positions";
 
     if (filterPosition && filterPosition !== "ALL") {
-        // If a specific position is requested, use the Array.filter method
         filteredDraftPool = DRAFT_POOL.filter(player => player.position === filterPosition);
-        currentFilter = filterPosition; // Update the label shown in the dropdown button
+        currentFilter = filterPosition;
     }
 
-    // Return the list to render and the label for the button
     return { filteredDraftPool, currentFilter };
 }
 
@@ -93,7 +94,7 @@ app.post("/draft", async (req, res) => {
                         player.isDrafted = true;
                         console.log(USER_ROSTER);
                     }
-                    break; 
+                    break;
                 }
             }
         } 
@@ -103,7 +104,6 @@ app.post("/draft", async (req, res) => {
                     USER_ROSTER.splice(i, 1);
                     i--;
                 }
-                break;
             }
     
             for (let i = 0; i < DRAFT_POOL.length; i++) {
@@ -133,6 +133,13 @@ app.post("/draft", async (req, res) => {
 
 app.get("/leaderboard", (req, res) => {
     res.render("leaderboard-page.ejs");
+});
+
+//kittle:
+app.get("/kittle", (req, res) => {
+    res.render("kittle.ejs", {
+        draftPool: DRAFT_POOL
+    });
 });
 
 app.listen(port, () => {

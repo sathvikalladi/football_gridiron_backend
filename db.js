@@ -1,7 +1,6 @@
 import pg from 'pg';
-const { Pool } = pg;
 
-const pool = new Pool({
+const db = new pg.Client({
     user: 'sathvikalladi',
     host: 'localhost',
     database: 'football_gridiron',
@@ -9,4 +8,4 @@ const pool = new Pool({
     port: 5432,
 });
 
-export default pool;
+export default db;
